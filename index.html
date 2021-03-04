@@ -20,7 +20,7 @@
 
     <script>
         const moviesList = document.querySelector(".moviesList-js");
-        let templateCardMovie = (title, summary, prod_year, genre) => {
+        let templateCardMovie = (id, title, summary, prod_year, genre) => {
             return `<div class="col g-4">
                 <div class="card">
                     <div class="card-body">
@@ -30,7 +30,7 @@
                         </div>
                         <p class="card-text">${summary}</p>
                         <p class="card-text">${prod_year}</p>
-                        <button class="btn btn-success ms-auto">More</button>
+                        <a class="btn btn-success ms-auto" href="viewmovie.html?id=${id}">More</a>
                     </div>
                 </div>
             </div>`;
@@ -48,7 +48,7 @@
                                 .then(function(response) {
                                     if(response.ok) {
                                         response.json().then(function(json){
-                                            moviesList.insertAdjacentHTML('beforeend',templateCardMovie(movie.title, movie.summary, movie.prod_year, json.name));
+                                            moviesList.insertAdjacentHTML('beforeend',templateCardMovie(movie.id, movie.title, movie.summary, movie.prod_year, json.name));
                                         })
                                     }
                                 });
