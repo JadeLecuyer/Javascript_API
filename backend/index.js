@@ -1,6 +1,9 @@
 const express = require('express');
+var cors = require('cors');
 
 const app = express();
+
+app.use(cors());
 
 const MoviesController = require('./controllers/movies-controller.js');
 let moviesController = new MoviesController;

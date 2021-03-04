@@ -1,9 +1,9 @@
-const Movie = require('../models/movie-model.js');
+const Movie = require('../models/movie-model.js')
 let movie = new Movie;
 
 class MoviesController {
 
-findAll= (req, res) => {
+    findAll = (req, res) => {
         movie.getAll((err, data) => {
         if (err)
             res.status(500).json({
