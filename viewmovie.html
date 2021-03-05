@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <main>
+        <div class="container">
+            <div class="py-3 movie-js">
+
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                tmp = item.split("=");
+                if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+
+        const movieId = findGetParameter('id');
+
+        const movieDisplay = document.querySelector(".movie-js");
+
+        let templateMovie = (id, title, summary, prod_year, genre, producer) => {
+            let template = `
+                    <h3 class="mb-3">${title}</h3>
+                    <div class="my-3">
+                        <h6>Summary</h6>
+                    <div class="">${summary}</div></div>`;
+
+            if(prod_year) {
+                template += `<div class="my-3"><h6>Production year</h6><div>${prod_year}</div></div>`;
+            }
+                    
+            if(genre) {
+                template += `<div class="my-3"><h6>Genre</h6><div class="text-capitalize">${genre.name}</div></div>`;
+            }
+
+            if(producer) {
+                template += `<div class="my-3"><h6>Producer</h6><div class="text-capitalize">${producer.name}</div></div>`;
+            }
+
+            return template;
+        }
+
+
+        async function getAPIData(url) {
+            try {
+                let response = await fetch(url);
+
+                if (!response.ok) {
+                    //const message = `An error has occured: ${response.status}`;
+                    //console.log(message);
+                    return null;
+                }
+
+                const data = await response.json();
+
+                return data;
+                
+            } catch(error) {
+                console.error(error);
+            }
+        }
+
+        async function displayMovie(id) {
+            const movie = await getAPIData('http://localhost:8080/api/movies/' + id);
+            const genre = await getAPIData('http://localhost:8080/api/movies/' + id + '/genres');
+            const producer = await getAPIData('http://localhost:8080/api/movies/' + id + '/producers');
+
+            console.log('displaymovie', [movie, genre, producer]);
+            return [movie, genre , producer];
+                
+        }
+
+        displayMovie(movieId)
+            .then(function([movie, genre, producer]){
+                if(movie === null) {
+                    movieDisplay.insertAdjacentHTML('beforeend', '<div>Movie not found !</div>');
+                } else {
+                    movieDisplay.insertAdjacentHTML('beforeend',templateMovie(movie.id, movie.title, movie.summary, movie.prod_year, genre, producer));
+                }
+            })
+
+    </script>
+</body>
+</html>
