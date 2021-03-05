@@ -20,7 +20,7 @@ app.get('/api/movies/:id/genres', moviesController.findGenre);
 //GET /api/movies/{id}/producers this return the producer of the movie with the specified id
 app.get('/api/movies/:id/producers', moviesController.findProducer);
 
-//GET /api/movies/{id} this return full info about the movie with the specified id
+//GET /api/movies/search/{search} this return the 10 first movie with search term in their name
 app.get('/api/movies/search/:search', moviesController.findSearchResults);
 
 
