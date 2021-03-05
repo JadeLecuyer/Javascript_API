@@ -3,7 +3,7 @@ const db = require('./db.js');
 class Movie {
 
   getAll = result => {
-    db.query("SELECT id, title, summary, prod_year FROM movies LIMIT 20 ORDER BY id", (err, res) => {
+    db.query("SELECT id, title, summary, prod_year FROM movies ORDER BY id LIMIT 20", (err, res) => {
       if (err) {
         //console.log("error: ", err);
         result(err, null);
@@ -57,6 +57,23 @@ class Movie {
   
       if (res.length) {
         result(null, res[0]);
+        return;
+      }
+      
+      result({ kind: "not_found" }, null);
+    });
+  }
+
+  getSearchResult = (search, result) => {
+    db.query(`SELECT * FROM movies WHERE title LIKE "%${search}%" LIMIT 10`, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+  
+      if (res.length) {
+        result(null, res);
         return;
       }
       

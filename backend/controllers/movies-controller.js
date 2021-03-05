@@ -61,6 +61,22 @@ class MoviesController {
             } else res.json(data);
         });
     }
+
+    findSearchResults = (req, res) => {
+        movie.getSearchResult(req.params.search, (err, data) => {
+            if (err) {
+                if (err.kind === "not_found") {
+                res.status(404).json({
+                    message: `Not found movies with name like ${req.params.search}.`
+                });
+                } else {
+                res.status(500).json({
+                    message: `Error retrieving movie name like ${req.params.search}.`
+                });
+                }
+            } else res.json(data);
+        });
+    }
 }
 
 module.exports = MoviesController;
