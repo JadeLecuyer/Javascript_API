@@ -123,7 +123,27 @@ if(searchBar) {
             })
     
     })
-}   
+}
+
+function outsideClick(event, notelem)	{
+    var clickedOut = true, i, len = notelem.length;
+    for (i = 0;i < len;i++)  {
+        if (event.target == notelem[i] || notelem[i].contains(event.target)) {
+            clickedOut = false;
+        }
+    }
+    if (clickedOut) return true;
+    else return false;
+}
+
+var modal = [document.getElementById("search"), document.getElementById("result")];
+window.addEventListener('click', function(e) {
+   if (outsideClick(e, modal)) {
+       results.innerHTML = '';
+   }
+});
+
+
 
 const movieId = findGetParameter('id');
 const movieDisplay = document.querySelector(".movie-js");
