@@ -1,3 +1,5 @@
+window.addEventListener("DOMContentLoaded", (event) => {
+
 async function getAPIData(url) {
     try {
         let response = await fetch(url);
@@ -143,6 +145,10 @@ window.addEventListener('click', function(e) {
    }
 });
 
+searchBar.addEventListener("search", function(event) {
+    results.innerHTML = '';  
+});
+
 
 
 const movieId = findGetParameter('id');
@@ -190,3 +196,4 @@ if(movieDisplay) {
             }
         })
 }
+})
