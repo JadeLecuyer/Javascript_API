@@ -20,7 +20,7 @@ async function getAPIData(url) {
 }
 
 function findGetParameter(parameterName) {
-    var result = null,
+    let result = null,
         tmp = [];
     location.search
         .substr(1)
@@ -35,8 +35,9 @@ function findGetParameter(parameterName) {
 
 
 const moviesList = document.querySelector(".moviesList-js");
+let movieOffset = 0;
 
-let templateCardMovie = (id, title, summary, genre) => {
+const templateCardMovie = (id, title, summary, genre = null) => {
     let template = `<div class="col g-4">
         <div class="card" style="min-height:270px;">
             <div class="card-body d-flex flex-column justify-content-between">
@@ -55,33 +56,47 @@ let templateCardMovie = (id, title, summary, genre) => {
     return template;
 }
 
-async function displayMovies() {
-    const movies = await getAPIData('http://localhost:8080/api/movies');
+async function getMovies(offset) {
+    const moviesData = await getAPIData('http://localhost:8080/api/movies&offset=' + offset);
+    let movies = [];
+
+    for(let movie of moviesData) {
+        const genre = await getAPIData('http://localhost:8080/api/movies/' + movie.id + '/genres');
+        if (genre) {
+            movie["genre"] = genre.name;
+        } else {
+            movie["genre"] = null;
+        }
+        
+        movies.push(movie);
+    }
+
     return movies;
 }
 
-if(moviesList) {                
-    displayMovies()
+function displayMovies(offset) {
+    getMovies(offset)
         .then(function(movies){
             for(let movie of movies) {
-                fetch('http://localhost:8080/api/movies/' + movie.id + '/genres')
-                .then(function(response) {
-                    if(response.ok) {
-                        response.json().then(function(json){
-                            moviesList.insertAdjacentHTML('beforeend',templateCardMovie(movie.id, movie.title, movie.summary, json.name));
-                            let params = `resizable=yes,scrollbars=yes,status=no,location=no,toolbar=no,menubar=no,width=600,height=450,left=300,top=150`;
-                            document.querySelector(`.seeMovie${movie.id}-js`).onclick = () => {window.open(`viewmovie.html?id=${movie.id}`, movie.title, params)};
-                        })
-                    } else {
-                        moviesList.insertAdjacentHTML('beforeend',templateCardMovie(movie.id, movie.title, movie.summary));
-                        let params = `resizable=yes,scrollbars=yes,status=no,location=no,toolbar=no,menubar=no,width=600,height=450,left=300,top=150`;
-                        document.querySelector(`.seeMovie${movie.id}-js`).onclick = () => {window.open(`viewmovie.html?id=${movie.id}`, movie.title, params)};
-                        console.log('Bad response');
-                    }
-
-                });
+                moviesList.insertAdjacentHTML('beforeend',templateCardMovie(movie.id, movie.title, movie.summary, movie.genre));
+                let params = `resizable=yes,scrollbars=yes,status=no,location=no,toolbar=no,menubar=no,width=600,height=450,left=300,top=150`;
+                document.querySelector(`.seeMovie${movie.id}-js`).onclick = () => {window.open(`viewmovie.html?id=${movie.id}`, movie.title, params)};
             }
+
+            movieOffset += 20;
         })
+}
+
+function loadNextMovies(offset) {
+    //console.log(window.scrollY, window.innerHeight, document.body.scrollHeight, offset);
+    if(window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+        displayMovies(offset);
+    }
+}
+
+if(moviesList) {
+    displayMovies(0);
+    document.addEventListener("scroll", () => loadNextMovies(movieOffset));
 }
 
 
@@ -181,9 +196,7 @@ async function displayMovie(id) {
     const genre = await getAPIData('http://localhost:8080/api/movies/' + id + '/genres');
     const producer = await getAPIData('http://localhost:8080/api/movies/' + id + '/producers');
     
-    //console.log('displaymovie', [movie, genre, producer]);
-    return [movie, genre , producer];
-            
+    return [movie, genre , producer];           
 }
 
 if(movieDisplay) {   

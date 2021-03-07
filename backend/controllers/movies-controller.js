@@ -4,7 +4,18 @@ let movie = new Movie;
 class MoviesController {
 
     findAll = (req, res) => {
-        movie.getAll((err, data) => {
+        movie.getAll(0, (err, data) => {
+        if (err)
+            res.status(500).json({
+            message:
+                err.message || "Some error occurred while retrieving movies."
+            });
+        else res.json(data);
+        });
+    }
+
+    findNextTwenty = (req, res) => {
+        movie.getAll(req.params.offset, (err, data) => {
         if (err)
             res.status(500).json({
             message:

@@ -11,6 +11,9 @@ let moviesController = new MoviesController;
 //GET /api/movies this returns only the 20 first movies entry with basic info
 app.get('/api/movies', moviesController.findAll);
 
+//GET /api/movies this returns only the 20 first movies entry with basic info
+app.get('/api/movies&offset=:offset', moviesController.findNextTwenty);
+
 //GET /api/movies/{id} this return full info about the movie with the specified id
 app.get('/api/movies/:id', moviesController.findOne);
 

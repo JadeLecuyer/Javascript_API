@@ -2,8 +2,8 @@ const db = require('./db.js');
 
 class Movie {
 
-  getAll = result => {
-    db.query("SELECT id, title, summary, prod_year FROM movies ORDER BY id LIMIT 20", (err, res) => {
+  getAll = (offset, result) => {
+    db.query(`SELECT id, title, summary, prod_year FROM movies ORDER BY id LIMIT 20 OFFSET ${offset}`, (err, res) => {
       if (err) {
         //console.log("error: ", err);
         result(err, null);
