@@ -35,6 +35,7 @@ function findGetParameter(parameterName) {
 
 
 const moviesList = document.querySelector(".moviesList-js");
+let moviesListHeight = moviesList.scrollHeight;
 
 let templateCardMovie = (id, title, summary, genre) => {
     let template = `<div class="col g-4">
@@ -60,6 +61,14 @@ async function displayMovies() {
     return movies;
 }
 
+function loadNextMovies() {
+    console.log(window.scrollY, moviesListHeight);
+    /*if (document.moviesList.scrollTop >= moviesListHeight) {
+        console.log("coucou");
+        moviesList.insertAdjacentHTML('beforeend', '<div>"coucou"</div>');
+    }*/
+}
+
 if(moviesList) {                
     displayMovies()
         .then(function(movies){
@@ -82,6 +91,12 @@ if(moviesList) {
                 });
             }
         })
+
+    console.log(moviesListHeight);
+    console.log(document.body.scrollTop );
+
+    document.addEventListener("scroll", loadNextMovies);
+    
 }
 
 
