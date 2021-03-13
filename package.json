@@ -16,12 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EpitechIT2020/C-RDG-115-FR-1-2-javascriptday03-jade.lecuyer.git"
+    "url": "git+https://github.com/JadeLecuyer/Javascript_API.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/EpitechIT2020/C-RDG-115-FR-1-2-javascriptday03-jade.lecuyer/issues"
+    "url": "https://github.com/JadeLecuyer/Javascript_API.git/issues"
   },
-  "homepage": "https://github.com/EpitechIT2020/C-RDG-115-FR-1-2-javascriptday03-jade.lecuyer#readme"
+  "homepage": "https://github.com/JadeLecuyer/Javascript_API.git#readme"
 }

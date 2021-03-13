@@ -139,7 +139,7 @@ if(searchBar) {
         }
     
         async function displayResults(search) {
-            const movies = await getAPIData('http://localhost:8080/api/movies/search/' + search);
+            const movies = await getAPIData('http://localhost:8080/api/movies&search=' + search);
             return movies;
         }
                     

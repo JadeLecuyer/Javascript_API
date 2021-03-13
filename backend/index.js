@@ -24,7 +24,7 @@ app.get('/api/movies/:id/genres', moviesController.findGenre);
 app.get('/api/movies/:id/producers', moviesController.findProducer);
 
 //GET /api/movies/search/{search} this return the 10 first movie with search term in their name
-app.get('/api/movies/search/:search', moviesController.findSearchResults);
+app.get('/api/movies&search=:search', moviesController.findSearchResults);
 
 
 app.listen(8080, () => {
