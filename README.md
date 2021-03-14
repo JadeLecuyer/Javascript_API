@@ -14,6 +14,7 @@ npm install
 ## Launch API
 
 Get and import database from database_dump
+
 Configure the database connexion in backend/models/db.js
 
 From the backend folder run :
